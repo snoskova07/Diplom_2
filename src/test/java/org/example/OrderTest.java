@@ -1,4 +1,5 @@
 package org.example;
+import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
@@ -15,8 +16,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class OrderTest {
     Response loginResponse;
@@ -70,13 +69,14 @@ public class OrderTest {
 
     @Test
     @DisplayName("Создание заказа без авторизации")
-    public void createOrderWithoutLogin() {
+    public void successCreateOrderWithoutLogin() {
         //Создание списка из 3 ингредиентов для формирования заказа
         List<String> orderList = orderHelper.generateIngredientsList();
         //Создание заказа
         createOrderRequest = new CreateOrderRequest(orderList);
         createOrderResponse = orderHelper.createOrderResponse(createOrderRequest, "",200);
         Assert.assertTrue(createOrderResponse.getSuccess());
+        Assert.assertNotNull(createOrderResponse.getOrder().getNumber());
     }
 
     @Test
@@ -104,21 +104,16 @@ public class OrderTest {
     @Test
     @DisplayName("Получение заказов пользователя с авторизацией")
     public void getUserOrders() {
-        //Авторизация
-        LoginUserResponse loginResponse = userHelper.loginUser(email, password, 200);
         //Создание заказа
         getUserOrdersResponse = orderHelper.getUserOrdersResponse(accessToken, 200);
         Assert.assertTrue(getUserOrdersResponse.getSuccess());
-        //Проверка кода ответа
     }
 
     @Test
     @DisplayName("Получение заказов пользователя с авторизацией")
     public void getUserOrdersWithoutAuthorizationFailed() {
-        //Авторизация
         //Создание заказа
         getUserOrdersResponse = orderHelper.getUserOrdersResponse("wrong access token", 403);
         Assert.assertFalse(getUserOrdersResponse.getSuccess());
-        //Проверка кода ответа
     }
 }
