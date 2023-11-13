@@ -1,65 +1,83 @@
 package org.example;
 
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.example.api.UserApi;
 import org.example.helper.UserGenerator;
 import org.example.helper.UserHelper;
 import org.example.model.CreateUserRequest;
 import org.example.model.CreateUserResponse;
-import org.example.model.DeleteUserRequest;
-import org.example.model.DeleteUserResponse;
 import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.example.config.ConfigUrl.DELETE_USER_URL;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class CreateUserTest {
     UserApi userApi;
-    CreateUserRequest createUserRequest;
-    DeleteUserRequest deleteUserRequest;
-    DeleteUserResponse deleteUserResponse;
     UserHelper userHelper;
+    CreateUserRequest createUserRequest;
+    CreateUserResponse createUserResponse;
+    CreateUserResponse createExistUserResponse;
+    String accessToken;
 
     @Before
-    public void setUp() {
+    public void setup() {
         userApi = new UserApi();
+        userHelper = new UserHelper();
+        createUserRequest = UserGenerator.getRandomUser();
     }
 
     @Test
-    @DisplayName("Успешное создание пользователя ")
-    public void createUser() {
-        createUserRequest = UserGenerator.getRandomUser();
-        Response createResponse = userApi.createUser(createUserRequest);
-        CreateUserResponse createUserResponse = createResponse.as(CreateUserResponse.class);
+    @DisplayName("Создание уникального пользователя")
+    public void createUserSuccess() {
+        // Создание пользователя
+        createUserResponse = userHelper.createUser(createUserRequest, 200);
         MatcherAssert.assertThat(createUserResponse, notNullValue());
-        Assert.assertTrue(createUserResponse.success);
-
-        String accessToken = createUserResponse.getAccessToken();
-        deleteUserRequest = new DeleteUserRequest(accessToken);
-     //   deleteUserResponse = userHelper.deleteUserSuccess(accessToken);
-        deleteUserResponse =  given()
-                .headers(
-                        "Authorization",
-                        accessToken)
-                .contentType(ContentType.JSON)
-                .when()
-                .delete(DELETE_USER_URL)
-                .then()
-                .statusCode(202)
-                .and()
-                .extract()
-                .as(DeleteUserResponse.class);
-        Assert.assertTrue(deleteUserResponse.success);
-        Assert.assertEquals(deleteUserResponse.getMessage(), "User successfully removed");
-   //     System.out.println(deleteUserResponse.getMessage());
+        Assert.assertTrue(createUserResponse.getSuccess());
+        //Удаление пользователя
+        accessToken = createUserResponse.getAccessToken();
+        userHelper.deleteUser(accessToken, 202);
     }
 
+    @Test
+    @DisplayName("Создание пользователя, который уже зарегистрирован невозможно")
+    public void createAlreadyRegisteredUserIsNotPossible() {
+        createUserResponse = userHelper.createUser(createUserRequest, 200);
+        createExistUserResponse = userHelper.createUser(createUserRequest, 403);
+        Assert.assertFalse(createExistUserResponse.getSuccess());
+        Assert.assertEquals(createExistUserResponse.getMessage(), "User already exists");
+        //Удаление пользователя
+        accessToken = createUserResponse.getAccessToken();
+        userHelper.deleteUser(accessToken, 202);
+    }
 
+    @Test
+    @DisplayName("Создание пользователя без заполненного поля email невозможно")
+    public void createUserWithoutEmailIsNotPossible() {
+        createUserRequest.setEmail("");
+        createUserResponse = userHelper.createUser(createUserRequest, 403);
+        Assert.assertFalse(createUserResponse.getSuccess());
+        Assert.assertEquals(createUserResponse.getMessage(), "Email, password and name are required fields");
+    }
 
+    @Test
+    @DisplayName("Создание пользователя без заполненного поля password невозможно")
+    public void createUserWithoutPasswordIsNotPossible() {
+        createUserRequest.setPassword("");
+        createUserResponse = userHelper.createUser(createUserRequest, 403);
+        Assert.assertFalse(createUserResponse.getSuccess());
+        Assert.assertEquals(createUserResponse.getMessage(), "Email, password and name are required fields");
+    }
+
+    @Test
+    @DisplayName("Создание пользователя без заполненного поля name невозможно")
+    public void createUserWithoutNameIsNotPossible() {
+        createUserRequest.setName("");
+        createUserResponse = userHelper.createUser(createUserRequest, 403);
+        Assert.assertFalse(createUserResponse.getSuccess());
+        Assert.assertEquals(createUserResponse.getMessage(), "Email, password and name are required fields");
+    }
 }

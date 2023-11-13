@@ -1,14 +1,12 @@
 package org.example.model;
 
-public class CreateUserRequest {
+public class LoginUserRequest {
+    public String email;
+    public String password;
 
-    private String email;
-    private String password;
-    private String name;
-    public CreateUserRequest(String email, String password, String name) {
+    public LoginUserRequest(String email, String password) {
         this.email = email;
         this.password = password;
-        this.name = name;
     }
 
     public String getEmail() {
@@ -25,13 +23,5 @@ public class CreateUserRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

@@ -1,9 +1,9 @@
 package org.example.model;
 
-import java.util.List;
+public class LoginUserResponse {
 
-public class CreateUserResponse {
     private Boolean success;
+
     private User user;
 
     private String accessToken;
@@ -28,7 +28,6 @@ public class CreateUserResponse {
     }
 
     public String getAccessToken() {
-
         return accessToken;
     }
 

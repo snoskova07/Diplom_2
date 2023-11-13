@@ -8,9 +8,9 @@ public class UserGenerator {
 
     @Step("Генерация данных пользователя")
     public static CreateUserRequest getRandomUser() {
-        String email = RandomStringUtils.randomAlphabetic(5).toLowerCase() + '@' + RandomStringUtils.randomAlphabetic(5).toLowerCase() + ".qwe";
-        String password = RandomStringUtils.randomAlphabetic(10);
-        String name = RandomStringUtils.randomAlphabetic(10);
+        String email = "mail" + RandomStringUtils.randomAlphabetic(2).toLowerCase() + '@' + RandomStringUtils.randomAlphabetic(5).toLowerCase() + ".qwe";
+        String password = "passwd" + RandomStringUtils.randomAlphabetic(5);
+        String name = "name" + RandomStringUtils.randomAlphabetic(3);
         return new CreateUserRequest(email, password, name);
     }
 

@@ -1,14 +1,9 @@
 package org.example.model;
 
-import java.util.List;
+public class EditUserResponse {
 
-public class CreateUserResponse {
     private Boolean success;
     private User user;
-
-    private String accessToken;
-
-    private String refreshToken;
     private String message;
 
     public Boolean getSuccess() {
@@ -25,23 +20,6 @@ public class CreateUserResponse {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getAccessToken() {
-
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     public String getMessage() {
