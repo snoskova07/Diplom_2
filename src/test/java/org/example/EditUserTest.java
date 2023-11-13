@@ -19,10 +19,7 @@ public class EditUserTest {
     CreateUserResponse createUserResponse;
     EditUserRequest editUserRequest;
     EditUserResponse editUserResponse;
-    LoginUserRequest loginUserRequest;
     LoginUserResponse loginUserResponse;
-    LogoutUserRequest logoutUserRequest;
-    LogoutUserResponse logoutUserResponse;
     String email;
     String password;
     String name;
@@ -47,30 +44,25 @@ public class EditUserTest {
 
     @After
     public void deleteUser() {
-        System.out.println("Удаление пользователя");
         userHelper.deleteUser(accessToken, 202);
     }
 
     @Test
     @DisplayName("Изменение email пользователя и авторизация с новым email")
     public void successChangeEmail() {
-        System.out.println("Задание нового email");
+        //Установка нового email
         email = "sv@asd123.ru";
         editUserRequest = new EditUserRequest(email, password, name);
-
-        System.out.println("Отправка запроса на изменение");
+        //Отправка запроса на изменение
         editUserResponse = userHelper.editUserSuccess(accessToken, editUserRequest, 200);
-
-        System.out.println("Проверка ответа");
+        //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertTrue(editUserResponse.getSuccess());
         Assert.assertEquals(editUserResponse.getUser().getEmail(), email);
-
-        System.out.println("Logout");
+        //Logout
         String refreshToken = loginUserResponse.getRefreshToken();
         userHelper.logoutUser(refreshToken, 200);
-
-        System.out.println("Login с новым email");
+        //Успешный Login с новым email
         loginUserResponse = userHelper.loginUser(email, password, 200);
         MatcherAssert.assertThat(loginUserResponse, notNullValue());
         Assert.assertTrue(loginUserResponse.getSuccess());
@@ -80,22 +72,18 @@ public class EditUserTest {
     @Test
     @DisplayName("Изменение password пользователя с авторизацией")
     public void successChangePassword() {
-        System.out.println("Задание нового password");
+        //Задание нового password
         password = "password";
         editUserRequest = new EditUserRequest(email, password, name);
-
-        System.out.println("Отправка запроса на изменение");
+        //Отправка запроса на изменение
         editUserResponse = userHelper.editUserSuccess(accessToken, editUserRequest, 200);
-
-        System.out.println("Проверка ответа");
+        //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertTrue(editUserResponse.getSuccess());
-
-        System.out.println("Logout");
+        //Logout
         String refreshToken = loginUserResponse.getRefreshToken();
         userHelper.logoutUser(refreshToken, 200);
-
-        System.out.println("Login с новым password");
+        //Успешный Login с новым password
         loginUserResponse = userHelper.loginUser(email, password, 200);
         MatcherAssert.assertThat(loginUserResponse, notNullValue());
         Assert.assertTrue(loginUserResponse.getSuccess());
@@ -104,43 +92,37 @@ public class EditUserTest {
     @Test
     @DisplayName("Изменение name пользователя с авторизацией")
     public void successChangeName() {
-        System.out.println("Задание нового name");
+        //Задание нового name
         name = "name";
         editUserRequest = new EditUserRequest(email, password, name);
-
-        System.out.println("Отправка запроса на изменение");
+        //Отправка запроса на изменение
         editUserResponse = userHelper.editUserSuccess(accessToken, editUserRequest, 200);
-
-        System.out.println("Проверка ответа");
+        //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertTrue(editUserResponse.getSuccess());
-
-        System.out.println("Logout");
+        //Logout
         String refreshToken = loginUserResponse.getRefreshToken();
         userHelper.logoutUser(refreshToken, 200);
-
-        System.out.println("Login с новым name");
+        //Успешный Login с новым name
         loginUserResponse = userHelper.loginUser(email, password, 200);
         MatcherAssert.assertThat(loginUserResponse, notNullValue());
         Assert.assertTrue(loginUserResponse.getSuccess());
         Assert.assertEquals(loginUserResponse.getUser().getName(), name);
-
     }
 
     @Test
     @DisplayName("Изменение email пользователя без авторизации невозможно")
     public void failedChangeEmail() {
-        System.out.println("Logout");
+        //Logout т.к. были авторизованы
         String refreshToken = loginUserResponse.getRefreshToken();
         userHelper.logoutUser(refreshToken, 200);
-
-        System.out.println("Задание нового email");
+        //Задание нового email
         email = "sv@qwe.ru";
-
+        //Формирование тела запроса
         EditUserRequest editUserRequest = new EditUserRequest(email, password, name);
-        System.out.println("Отправка запроса на изменение");
+        //Отправка запроса на изменение c пустым токеном
         editUserResponse = userHelper.editUserSuccess("", editUserRequest, 401);
-        System.out.println("Проверка ответа");
+        //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertFalse(editUserResponse.getSuccess());
         Assert.assertEquals("You should be authorised", editUserResponse.getMessage());
@@ -149,17 +131,15 @@ public class EditUserTest {
     @Test
     @DisplayName("Изменение password пользователя без авторизации невозможно")
     public void failedChangePassword() {
-        System.out.println("Logout");
+        //Выход т.к. были авторизованы
         String refreshToken = loginUserResponse.getRefreshToken();
         userHelper.logoutUser(refreshToken, 200);
-
-        System.out.println("Задание нового email");
+        //Задание нового пароля
         password = "passwd";
-
         EditUserRequest editUserRequest = new EditUserRequest(email, password, name);
-        System.out.println("Отправка запроса на изменение");
+        //Отправка запроса на изменение с пустым токеном
         editUserResponse = userHelper.editUserSuccess("", editUserRequest, 401);
-        System.out.println("Проверка ответа");
+        //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertFalse(editUserResponse.getSuccess());
         Assert.assertEquals("You should be authorised", editUserResponse.getMessage());
@@ -168,17 +148,15 @@ public class EditUserTest {
     @Test
     @DisplayName("Изменение name пользователя без авторизации невозможно")
     public void failedChangeName() {
-        System.out.println("Logout");
+        //Выход т.к. были авторизованы
         String refreshToken = loginUserResponse.getRefreshToken();
         userHelper.logoutUser(refreshToken, 200);
-
-        System.out.println("Задание нового email");
+        //Задание нового имени
         name = "name1";
-
         EditUserRequest editUserRequest = new EditUserRequest(email, password, name);
-        System.out.println("Отправка запроса на изменение");
+        //Отправка запроса на изменение с пустым токеном
         editUserResponse = userHelper.editUserSuccess("", editUserRequest, 401);
-        System.out.println("Проверка ответа");
+        //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertFalse(editUserResponse.getSuccess());
         Assert.assertEquals("You should be authorised", editUserResponse.getMessage());

@@ -1,8 +1,6 @@
 package org.example;
 
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import org.example.api.UserApi;
 import org.example.helper.UserGenerator;
 import org.example.helper.UserHelper;
@@ -31,7 +29,7 @@ public class CreateUserTest {
     }
 
     @Test
-    @DisplayName("Создание уникального пользователя")
+    @DisplayName("Успешное создание уникального пользователя")
     public void createUserSuccess() {
         // Создание пользователя
         createUserResponse = userHelper.createUser(createUserRequest, 200);
@@ -55,7 +53,7 @@ public class CreateUserTest {
     }
 
     @Test
-    @DisplayName("Создание пользователя без заполненного поля email невозможно")
+    @DisplayName("Создание пользователя с пустым полем email невозможно")
     public void createUserWithoutEmailIsNotPossible() {
         createUserRequest.setEmail("");
         createUserResponse = userHelper.createUser(createUserRequest, 403);
@@ -64,7 +62,7 @@ public class CreateUserTest {
     }
 
     @Test
-    @DisplayName("Создание пользователя без заполненного поля password невозможно")
+    @DisplayName("Создание пользователя с пустым полем password невозможно")
     public void createUserWithoutPasswordIsNotPossible() {
         createUserRequest.setPassword("");
         createUserResponse = userHelper.createUser(createUserRequest, 403);
@@ -73,7 +71,7 @@ public class CreateUserTest {
     }
 
     @Test
-    @DisplayName("Создание пользователя без заполненного поля name невозможно")
+    @DisplayName("Создание пользователя с пустым полем name невозможно")
     public void createUserWithoutNameIsNotPossible() {
         createUserRequest.setName("");
         createUserResponse = userHelper.createUser(createUserRequest, 403);

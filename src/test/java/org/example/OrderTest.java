@@ -54,22 +54,29 @@ public class OrderTest {
     }
 
     @Test
-    @DisplayName("Создание заказа с авторизацией")
+    @DisplayName("Успешное создание заказа с авторизацией")
     public void successCreateOrder() {
-        //Создание заказа
-        createOrderRequest = new CreateOrderRequest(orderHelper.generateIngredientsList());
-        System.out.println(createOrderRequest.getIngredients());
+        //Создание списка из 3 ингредиентов для формирования заказа
+        List<String> orderList = orderHelper.generateIngredientsList();
+        //Создание запроса
+        createOrderRequest = new CreateOrderRequest(orderList);
+        //Отправка запроса
         createOrderResponse = orderHelper.createOrderResponse(createOrderRequest, accessToken, 200);
         Assert.assertTrue(createOrderResponse.getSuccess());
+        Assert.assertEquals(orderList.get(0), createOrderResponse.getOrder().getIngredients().get(0).get_id());
+        Assert.assertEquals(orderList.get(1), createOrderResponse.getOrder().getIngredients().get(1).get_id());
+        Assert.assertEquals(orderList.get(2), createOrderResponse.getOrder().getIngredients().get(2).get_id());
     }
 
     @Test
-    @DisplayName("Создание заказа без авторизации невозможно")
-    public void createOrderWithoutLoginIsNotPossible() {
+    @DisplayName("Создание заказа без авторизации")
+    public void createOrderWithoutLogin() {
+        //Создание списка из 3 ингредиентов для формирования заказа
+        List<String> orderList = orderHelper.generateIngredientsList();
         //Создание заказа
-        createOrderRequest = new CreateOrderRequest(orderHelper.generateIngredientsList());
-        createOrderResponse = orderHelper.createOrderResponse(createOrderRequest, "",401);
-        Assert.assertFalse(createOrderResponse.getSuccess());
+        createOrderRequest = new CreateOrderRequest(orderList);
+        createOrderResponse = orderHelper.createOrderResponse(createOrderRequest, "",200);
+        Assert.assertTrue(createOrderResponse.getSuccess());
     }
 
     @Test

@@ -2,6 +2,7 @@ package org.example.helper;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+import org.example.api.IngredientApi;
 import org.example.api.OrderApi;
 import org.example.model.*;
 import org.hamcrest.MatcherAssert;
@@ -14,9 +15,11 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class OrderHelper {
     OrderApi orderApi = new OrderApi();
+    IngredientApi ingredientApi = new IngredientApi();
+
     @Step("Получение списка ингредиентов")
     public GetIngredientsResponse getIngredients() {
-        Response response = orderApi.getIngredients();
+        Response response = ingredientApi.getAllIngredients();
         GetIngredientsResponse getOrderResponse = response.as(GetIngredientsResponse.class);
         return getOrderResponse;
     }

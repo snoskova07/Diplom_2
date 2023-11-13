@@ -23,14 +23,7 @@ public class OrderApi extends BaseApi {
                 .post(ORDER_URL);
     }
 
-    @Step("Получение спмска ингредиентов")
-    public Response getIngredients() {
-        return postSpecification()
-                .when()
-                .get(INGREDIENTS_URL);
-    }
-
-    @Step("Получение списка ингредиентов")
+    @Step("Получение списка заказов пользователя")
     public Response getUserOrders(String accessToken) {
         return given()
                 .headers(
@@ -40,6 +33,4 @@ public class OrderApi extends BaseApi {
                 .when()
                 .get(ORDER_URL);
     }
-
-
 }
