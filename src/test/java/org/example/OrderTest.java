@@ -1,5 +1,5 @@
 package org.example;
-import io.qameta.allure.Step;
+
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderTest {
-    Response loginResponse;
-    LoginUserRequest loginUserRequest;
     UserApi userApi;
     OrderApi orderApi;
     OrderHelper orderHelper;

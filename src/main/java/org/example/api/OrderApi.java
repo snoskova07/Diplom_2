@@ -2,10 +2,7 @@ package org.example.api;
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import org.example.model.*;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.example.config.ConfigUrl.*;

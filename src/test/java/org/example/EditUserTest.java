@@ -1,7 +1,5 @@
 package org.example;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import org.example.api.UserApi;
 import org.example.helper.UserGenerator;
 import org.example.helper.UserHelper;

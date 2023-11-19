@@ -2,7 +2,6 @@ package org.example;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import org.example.api.UserApi;
 import org.example.helper.UserGenerator;
 import org.example.helper.UserHelper;
@@ -19,8 +18,6 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class LoginUserTest {
-    Response loginResponse;
-    LoginUserRequest loginUserRequest;
     UserApi userApi;
     CreateUserRequest createUserRequest;
     CreateUserResponse createUserResponse;
