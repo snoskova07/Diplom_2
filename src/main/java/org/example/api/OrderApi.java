@@ -1,5 +1,7 @@
 package org.example.api;
 import io.qameta.allure.Step;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.example.model.*;
@@ -11,6 +13,8 @@ public class OrderApi extends BaseApi {
     @Step("Создание заказа")
     public Response createOrder(CreateOrderRequest createOrderRequest, String accessToken) {
         return given()
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
                 .headers(
                         "Authorization",
                         accessToken)
@@ -23,6 +27,8 @@ public class OrderApi extends BaseApi {
     @Step("Получение списка заказов пользователя")
     public Response getUserOrders(String accessToken) {
         return given()
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
                 .headers(
                         "Authorization",
                         accessToken)

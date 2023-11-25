@@ -18,18 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderTest {
-    UserApi userApi;
-    OrderApi orderApi;
-    OrderHelper orderHelper;
-    CreateUserRequest createUserRequest;
-    CreateUserResponse createUserResponse;
-    CreateOrderRequest createOrderRequest;
-    CreateOrderResponse createOrderResponse;
-    GetUserOrdersResponse getUserOrdersResponse;
-    UserHelper userHelper;
-    String accessToken;
-    String email;
-    String password;
+    private UserApi userApi;
+    private OrderApi orderApi;
+    private OrderHelper orderHelper;
+    private CreateUserRequest createUserRequest;
+    private CreateUserResponse createUserResponse;
+    private  CreateOrderRequest createOrderRequest;
+    private  CreateOrderResponse createOrderResponse;
+    private GetUserOrdersResponse getUserOrdersResponse;
+    private UserHelper userHelper;
+    private String accessToken;
+    private String email;
+    private  String password;
     @Before
     public void setup() {
         userApi = new UserApi();
@@ -85,7 +85,7 @@ public class OrderTest {
         createOrderRequest = new CreateOrderRequest(orderList);
         createOrderResponse = orderHelper.createOrderResponse(createOrderRequest, accessToken,  400);
         Assert.assertFalse(createOrderResponse.getSuccess());
-        Assert.assertEquals(createOrderResponse.getMessage(), "Ingredient ids must be provided");
+        Assert.assertEquals("Ingredient ids must be provided", createOrderResponse.getMessage());
     }
 
     @Test
@@ -93,6 +93,7 @@ public class OrderTest {
     public void createOrderWithWrongHashIsNotPossible() {
         //Создание заказа
         List<String> orderList = new ArrayList<>();
+        String responseCode;
         orderList.add("wronghash");
         createOrderRequest = new CreateOrderRequest(orderList);
         Response response = orderApi.createOrder(createOrderRequest, accessToken);

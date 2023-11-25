@@ -1,9 +1,9 @@
 package org.example.model;
 
 public class EditUserRequest {
-    String email;
-    String password;
-    String name;
+    private String email;
+    private String password;
+    private String name;
     public EditUserRequest(String email, String password, String name) {
         this.email = email;
         this.password = password;

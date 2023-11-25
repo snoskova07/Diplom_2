@@ -7,22 +7,27 @@ import org.example.helper.UserHelper;
 import org.example.model.CreateUserRequest;
 import org.example.model.CreateUserResponse;
 import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class CreateUserTest {
-    UserApi userApi;
-    UserHelper userHelper;
-    CreateUserRequest createUserRequest;
-    CreateUserResponse createUserResponse;
-    CreateUserResponse createExistUserResponse;
-    String accessToken;
+    private UserApi userApi;
+    private UserHelper userHelper;
+    private CreateUserRequest createUserRequest;
+    private CreateUserResponse createUserResponse;
+    private CreateUserResponse createExistUserResponse;
+    private String accessToken;
 
     @Before
     public void setup() {
+        userApi = new UserApi();
+        userHelper = new UserHelper();
+        createUserRequest = UserGenerator.getRandomUser();
+    }
+
+    @After
+    public void deleteUser() {
         userApi = new UserApi();
         userHelper = new UserHelper();
         createUserRequest = UserGenerator.getRandomUser();
@@ -35,9 +40,6 @@ public class CreateUserTest {
         createUserResponse = userHelper.createUser(createUserRequest, 200);
         MatcherAssert.assertThat(createUserResponse, notNullValue());
         Assert.assertTrue(createUserResponse.getSuccess());
-        //Удаление пользователя
-        accessToken = createUserResponse.getAccessToken();
-        userHelper.deleteUser(accessToken, 202);
     }
 
     @Test
@@ -47,18 +49,15 @@ public class CreateUserTest {
         createExistUserResponse = userHelper.createUser(createUserRequest, 403);
         Assert.assertFalse(createExistUserResponse.getSuccess());
         Assert.assertEquals(createExistUserResponse.getMessage(), "User already exists");
-        //Удаление пользователя
-        accessToken = createUserResponse.getAccessToken();
-        userHelper.deleteUser(accessToken, 202);
     }
 
-    @Test
+    @Test()
     @DisplayName("Создание пользователя с пустым полем email невозможно")
     public void createUserWithoutEmailIsNotPossible() {
         createUserRequest.setEmail("");
         createUserResponse = userHelper.createUser(createUserRequest, 403);
         Assert.assertFalse(createUserResponse.getSuccess());
-        Assert.assertEquals(createUserResponse.getMessage(), "Email, password and name are required fields");
+        Assert.assertEquals("Email, password and name are required fields", createUserResponse.getMessage());
     }
 
     @Test
@@ -67,7 +66,7 @@ public class CreateUserTest {
         createUserRequest.setPassword("");
         createUserResponse = userHelper.createUser(createUserRequest, 403);
         Assert.assertFalse(createUserResponse.getSuccess());
-        Assert.assertEquals(createUserResponse.getMessage(), "Email, password and name are required fields");
+        Assert.assertEquals("Email, password and name are required fields", createUserResponse.getMessage());
     }
 
     @Test
@@ -76,6 +75,6 @@ public class CreateUserTest {
         createUserRequest.setName("");
         createUserResponse = userHelper.createUser(createUserRequest, 403);
         Assert.assertFalse(createUserResponse.getSuccess());
-        Assert.assertEquals(createUserResponse.getMessage(), "Email, password and name are required fields");
+        Assert.assertEquals("Email, password and name are required fields", createUserResponse.getMessage());
     }
 }

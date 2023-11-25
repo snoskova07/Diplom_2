@@ -18,13 +18,13 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class LoginUserTest {
-    UserApi userApi;
-    CreateUserRequest createUserRequest;
-    CreateUserResponse createUserResponse;
-    UserHelper userHelper;
-    String accessToken;
-    String email;
-    String password;
+    private UserApi userApi;
+    private  CreateUserRequest createUserRequest;
+    private CreateUserResponse createUserResponse;
+    private UserHelper userHelper;
+    private String accessToken;
+    private  String email;
+    private String password;
     @Before
     public void setup() {
         userApi = new UserApi();
@@ -60,7 +60,7 @@ public class LoginUserTest {
         email = "wrong";
         LoginUserResponse loginResponse = userHelper.loginUser(email, password, 401);
         Assert.assertFalse(loginResponse.getSuccess());
-        Assert.assertEquals(loginResponse.getMessage(), "email or password are incorrect");
+        Assert.assertEquals("email or password are incorrect", loginResponse.getMessage());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class LoginUserTest {
         password = "wrong";
         LoginUserResponse loginResponse = userHelper.loginUser(email, password, 401);
         Assert.assertFalse(loginResponse.getSuccess());
-        Assert.assertEquals(loginResponse.getMessage(), "email or password are incorrect");
+        Assert.assertEquals("email or password are incorrect", loginResponse.getMessage());
     }
 
 }

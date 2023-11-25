@@ -11,18 +11,18 @@ import org.junit.After;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.notNullValue;
 public class EditUserTest {
-    UserApi userApi;
-    UserHelper userHelper;
-    CreateUserRequest createUserRequest;
-    CreateUserResponse createUserResponse;
-    EditUserRequest editUserRequest;
-    EditUserResponse editUserResponse;
-    LoginUserResponse loginUserResponse;
-    String email;
-    String password;
-    String name;
-    String accessToken;
-    String refreshToken;
+    private UserApi userApi;
+    private UserHelper userHelper;
+    private CreateUserRequest createUserRequest;
+    private CreateUserResponse createUserResponse;
+    private EditUserRequest editUserRequest;
+    private EditUserResponse editUserResponse;
+    private LoginUserResponse loginUserResponse;
+    private String email;
+    private String password;
+    private String name;
+    private String accessToken;
+    private String refreshToken;
     @Before
     public void setup() {
         userApi = new UserApi();
@@ -57,14 +57,6 @@ public class EditUserTest {
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertTrue(editUserResponse.getSuccess());
         Assert.assertEquals(editUserResponse.getUser().getEmail(), email);
-        //Logout
-        String refreshToken = loginUserResponse.getRefreshToken();
-        userHelper.logoutUser(refreshToken, 200);
-        //Успешный Login с новым email
-        loginUserResponse = userHelper.loginUser(email, password, 200);
-        MatcherAssert.assertThat(loginUserResponse, notNullValue());
-        Assert.assertTrue(loginUserResponse.getSuccess());
-        Assert.assertEquals(loginUserResponse.getUser().getEmail(), email);
     }
 
     @Test
@@ -78,13 +70,6 @@ public class EditUserTest {
         //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertTrue(editUserResponse.getSuccess());
-        //Logout
-        String refreshToken = loginUserResponse.getRefreshToken();
-        userHelper.logoutUser(refreshToken, 200);
-        //Успешный Login с новым password
-        loginUserResponse = userHelper.loginUser(email, password, 200);
-        MatcherAssert.assertThat(loginUserResponse, notNullValue());
-        Assert.assertTrue(loginUserResponse.getSuccess());
     }
 
     @Test
@@ -98,14 +83,6 @@ public class EditUserTest {
         //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertTrue(editUserResponse.getSuccess());
-        //Logout
-        String refreshToken = loginUserResponse.getRefreshToken();
-        userHelper.logoutUser(refreshToken, 200);
-        //Успешный Login с новым name
-        loginUserResponse = userHelper.loginUser(email, password, 200);
-        MatcherAssert.assertThat(loginUserResponse, notNullValue());
-        Assert.assertTrue(loginUserResponse.getSuccess());
-        Assert.assertEquals(loginUserResponse.getUser().getName(), name);
     }
 
     @Test

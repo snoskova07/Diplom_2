@@ -1,6 +1,8 @@
 package org.example.api;
 
 import io.qameta.allure.Step;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.example.model.EditUserRequest;
@@ -11,6 +13,8 @@ public class UserApi extends BaseApi {
     @Step("Отправка запроса на удаление пользователя")
     public Response deleteUser(String accessToken) {
         return given()
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
                 .headers(
                         "Authorization",
                         accessToken)
@@ -21,6 +25,8 @@ public class UserApi extends BaseApi {
     @Step("Отправка запроса на редактирование пользователя")
     public Response editUser(String accessToken, EditUserRequest editUserRequest) {
         return given()
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
                 .headers(
                         "Authorization",
                         accessToken)
