@@ -56,7 +56,7 @@ public class EditUserTest {
         //Проверка ответа
         MatcherAssert.assertThat(editUserResponse, notNullValue());
         Assert.assertTrue(editUserResponse.getSuccess());
-        Assert.assertEquals(editUserResponse.getUser().getEmail(), email);
+        Assert.assertEquals(email, editUserResponse.getUser().getEmail());
     }
 
     @Test

@@ -48,7 +48,7 @@ public class CreateUserTest {
         createUserResponse = userHelper.createUser(createUserRequest, 200);
         createExistUserResponse = userHelper.createUser(createUserRequest, 403);
         Assert.assertFalse(createExistUserResponse.getSuccess());
-        Assert.assertEquals(createExistUserResponse.getMessage(), "User already exists");
+        Assert.assertEquals("User already exists", createExistUserResponse.getMessage());
     }
 
     @Test()
